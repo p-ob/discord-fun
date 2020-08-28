@@ -24,3 +24,15 @@ export async function getReilly(guild) {
         return;
     }
 }
+
+export function awaitTimeout(timeMs) {
+    return new Promise((resolve, _reject) => {
+        setTimeout(() => {
+            resolve();
+        }, timeMs)
+    });
+}
+
+export function minutesToMilliseconds(minutes) {
+    return minutes * 60 * 100;
+}

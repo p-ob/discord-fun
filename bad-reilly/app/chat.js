@@ -1,4 +1,5 @@
 import { Client } from "discord.js";
+import { awaitTimeout, minutesToMilliseconds } from "./common.js";
 
 const msgs = [
     "Halo sucks",
@@ -16,7 +17,8 @@ const msgs = [
     "How can you make Halo: Combat Evolved and then fall so low...",
     "Only scrubs like Halo",
     "OMG NO BODY CARES ABOUT HALO",
-    "♥"
+    "♥",
+    "Facts: http://forums.bungie.org/halo/archive7.pl?read=177201"
 ];
 
 /**
@@ -31,10 +33,11 @@ export default function configure(client) {
         }
         if (msg.member.id === process.env.REILLY_ID) {
             const reply = msgs[Math.floor(Math.random() * items.length)];
+            await awaitTimeout(100);
             const p = msg.reply(reply);
             isPaused = true;
-            const maxDelay = 10 * 60 * 100; // 10 min * 60 s/min * 100 ms/s
-            const minDelay = 1 * 60 * 60; // 1 min * 60 s/min * 100 ms/s
+            const maxDelay = minutesToMilliseconds(10);
+            const minDelay = minutesToMilliseconds(1);
             const delay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
             setTimeout(() => {
                 isPaused = false;
