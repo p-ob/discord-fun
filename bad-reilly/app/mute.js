@@ -7,9 +7,9 @@ export default function configure(client) {
     client.on("voiceStateUpdate", async (oldVoiceState, newVoiceState) => {
         if (oldVoiceState.member.id === process.env.REILLY_ID) {
             console.log("And so it begins...");
-            const joinedChannel = !oldVoiceState && newVoiceState;
+            const joinedChannel = !oldVoiceState.channelID && newVoiceState.channelID;
             if (joinedChannel) {
-                startClock(() => newVoiceState.member.voice.setMute(true));
+                startClock(() => newVoiceState.member.voice.setSelfMute(true));
             }
         }
     });
