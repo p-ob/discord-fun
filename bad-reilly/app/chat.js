@@ -31,7 +31,7 @@ export default function configure(client) {
         if (isPaused) {
             return;
         }
-        if (msg.member.id === process.env.REILLY_ID) {
+        if (msg.member?.id === process.env.REILLY_ID) {
             const reply = msgs[Math.floor(Math.random() * items.length)];
             await awaitTimeout(100);
             const p = msg.reply(reply);

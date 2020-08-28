@@ -1,16 +1,18 @@
-import { Client } from "discord.js";
+import { Client, Guild, GuildMember } from "discord.js";
 
 /**
  *
  * @param {Client} client
+ * @returns {Promise<Guild>}
  */
-export function getGuild() {
+export function getGuild(client) {
     return client.guilds.fetch(process.env.GUILD_ID, true);
 }
 
 /**
  *
- * @param {Client} client
+ * @param {Guid} guild
+ * @returns {Promise<GuildMember>}
  */
 export async function getReilly(guild) {
     if (!guild) {
@@ -25,6 +27,11 @@ export async function getReilly(guild) {
     }
 }
 
+/**
+ *
+ * @param {Number} timeMs
+ * @returns {Promise<void>}
+ */
 export function awaitTimeout(timeMs) {
     return new Promise((resolve, _reject) => {
         setTimeout(() => {

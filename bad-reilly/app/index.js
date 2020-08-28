@@ -11,6 +11,8 @@ client.on("ready", () => {
     configureMoveCommand(client);
     configureMute(client);
     configureChat(client);
+
+    console.log("<Insert JAWS music here>");
 });
 
 

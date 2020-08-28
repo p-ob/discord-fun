@@ -8,7 +8,7 @@ import { getGuild, getReilly } from "./common.js";
 export default function configure(client) {
     client.on("message", async msg => {
         if (msg.content.startsWith("!badreilly")) {
-            const guild = await getGuild();
+            const guild = await getGuild(client);
             if (!guild) {
                 return;
             }
@@ -17,11 +17,16 @@ export default function configure(client) {
                 return;
             }
 
+            if (!reillyMember.voice?.channelID) {
+                return;
+            }
+
             const channel = guild.channels.cache.find(x => x.id === process.env.CHANNEL_ID);
             if (!channel) {
                 return;
             }
             reillyMember.voice.setChannel(channel);
+            msg.reply(`<@${reillyMember.id}> has been sent on timeout.`);
         }
     });
 }
