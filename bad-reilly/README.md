@@ -6,4 +6,4 @@ Clearly, a dedicated voice channel where Reilly can't speak isn't enough. Let's 
 
 - [x] Random timer to mute Reilly (./app/mute.js)
 - [x] !badreilly send to Reilly's Shame Corner (./app/move.js)
-- [ ] Everytime Reilly says something, respond with "Halo sucks"
+- [x] Everytime Reilly says something, respond with "Halo sucks"
