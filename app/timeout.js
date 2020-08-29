@@ -103,7 +103,7 @@ export default function configure(client) {
         const connection = await channel.join();
         const ytId = randomItem(YT_IDS);
         const dispatcher = connection.play(getYouTubeStream(ytId), {
-          volume: 1.0,
+          volume: 0.5,
         });
 
         dispatcher.on("finish", async () => {
