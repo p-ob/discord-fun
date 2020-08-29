@@ -11,6 +11,8 @@ jobs:
 
         - name: 'Build the app'
           uses: actions/setup-node@v1
+          with:
+            node-version: '14'
         - run: |
             yarn install --frozen-lockfile
             yarn run build
