@@ -59,3 +59,11 @@ export function getYouTubeStream(id) {
     filter: "audioonly",
   });
 }
+
+/**
+ *
+ * @param {Array} arr
+ */
+export function randomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}

@@ -19,6 +19,7 @@ export default function configure(client) {
       }
       const channel = msg.member.voice?.channel;
       if (channel) {
+        msg.guild?.voice?.channel?.leave();
         const connection = await channel.join();
         const dispatcher = connection.play(getYouTubeStream(id), {
           volume: 0.5,

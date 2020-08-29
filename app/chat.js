@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { awaitTimeout, minutesToMilliseconds } from "./common.js";
+import { awaitTimeout, minutesToMilliseconds, randomItem } from "./common.js";
 
 const replies = [
   "Halo sucks",
@@ -32,7 +32,7 @@ export default function configure(client) {
       return;
     }
     if (msg.member?.id === process.env.REILLY_ID) {
-      const reply = replies[Math.floor(Math.random() * replies.length)];
+      const reply = randomItem(replies);
       await awaitTimeout(100);
       const p = msg.reply(reply);
       isPaused = true;
