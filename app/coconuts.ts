@@ -1,14 +1,10 @@
-import { Client } from "discord.js";
 import { getYouTubeStream } from "./common.js";
+import type { Client } from "discord.js";
 
 const SHORT_YT_ID = "pmyOHqgidYQ";
 const LONG_YT_ID = "nf670orHKcA";
 
-/**
- *
- * @param {Client} client
- */
-export default function configure(client) {
+export default function configure(client: Client) {
   client.on("message", async (msg) => {
     if (msg.content.startsWith("!coconuts")) {
       let id;
@@ -17,7 +13,7 @@ export default function configure(client) {
       } else {
         id = SHORT_YT_ID;
       }
-      const channel = msg.member.voice?.channel;
+      const channel = msg.member?.voice?.channel;
       if (channel) {
         msg.guild?.voice?.channel?.leave();
         const connection = await channel.join();

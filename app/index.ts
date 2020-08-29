@@ -3,7 +3,7 @@ import configureTimeoutCommand from "./timeout.js";
 import configureMute from "./mute.js";
 import configureChat from "./chat.js";
 import configureCoconuts from "./coconuts.js";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 

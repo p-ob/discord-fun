@@ -1,14 +1,14 @@
-import { Client } from "discord.js";
 import InfiniteClock from "./infinite-clock.js";
+import type { Client } from "discord.js";
 
 /**
  *
  * @param {Client} client
  */
-export default function configure(client) {
+export default function configure(client: Client) {
   const CLOCK_STATE = new InfiniteClock();
   client.on("voiceStateUpdate", async (oldVoiceState, newVoiceState) => {
-    if (oldVoiceState.member.id === process.env.REILLY_ID) {
+    if (oldVoiceState.member?.id === process.env.REILLY_ID) {
       console.log("And so it begins...");
       const channelChange = oldVoiceState.channelID !== newVoiceState.channelID;
       if (channelChange) {
@@ -20,7 +20,7 @@ export default function configure(client) {
           await CLOCK_STATE.cancel();
         }
         CLOCK_STATE.run(() => {
-          newVoiceState.member.voice.setSelfMute(true);
+          newVoiceState.member?.voice.setSelfMute(true);
         });
       } else {
         // user didn't just join a channel

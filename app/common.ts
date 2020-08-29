@@ -1,23 +1,11 @@
-import { Client, Guild, GuildMember } from "discord.js";
-import ytdl from "ytdl-core";
-import { Readable } from "stream";
+import * as ytdl from "ytdl-core";
+import type { Guild, Client } from "discord.js";
 
-/**
- *
- * @param {Client} client
- * @returns {Promise<Guild>}
- */
-export function getGuild(client) {
-  return client.guilds.fetch(process.env.GUILD_ID, true);
+export function getGuild(client: Client) {
+  return client.guilds.fetch(process.env.GUILD_ID!, true);
 }
 
-/**
- *
- * @param {Client} client
- * @param {Guild} guild
- * @returns {Promise<GuildMember>}
- */
-export async function getReilly(client, guild) {
+export async function getReilly(client: Client, guild: Guild) {
   if (!guild) {
     guild = await getGuild(client);
   }
@@ -25,18 +13,13 @@ export async function getReilly(client, guild) {
     throw new Error("Guild is requird");
   }
   const reillyMember = await guild.members.fetch({
-    user: process.env.REILLY_ID,
+    user: process.env.REILLY_ID!,
     cache: true,
   });
   return reillyMember;
 }
 
-/**
- *
- * @param {Number} timeMs
- * @returns {Promise<void>} A promise that resolves when timeMs has elapsed
- */
-export function awaitTimeout(timeMs) {
+export function awaitTimeout(timeMs: number) {
   return new Promise((resolve, _reject) => {
     setTimeout(() => {
       resolve();
@@ -44,26 +27,16 @@ export function awaitTimeout(timeMs) {
   });
 }
 
-export function minutesToMilliseconds(minutes) {
+export function minutesToMilliseconds(minutes: number) {
   return minutes * 60 * 100;
 }
 
-/**
- *
- * @param {string} id - the unique id of the video
- *
- * @returns {Readable}
- */
-export function getYouTubeStream(id) {
+export function getYouTubeStream(id: string) {
   return ytdl(`https://www.youtube.com/watch?v=${id}`, {
     filter: "audioonly",
   });
 }
 
-/**
- *
- * @param {Array} arr
- */
-export function randomItem(arr) {
+export function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
