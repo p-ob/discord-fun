@@ -16,7 +16,12 @@ jobs:
         - run: |
             yarn install --frozen-lockfile
             yarn run build
-            echo 'BOT_TOKEN=${{ secrets.BOT_TOKEN }}\nREILLY_ID=${{ secrets.REILLY_ID }}\nGUILD_ID=${{ secrets.GUILD_ID }}\nCHANNEL_ID=${{ secrets.CHANNEL_ID }}\nREILLY_TIMEOUT_ROLE_ID=${{ secrets.REILLY_TIMEOUT_ROLE_ID }}' >> .env
+            touch .env
+            echo 'BOT_TOKEN=${{ secrets.BOT_TOKEN }}' >> .env
+            echo 'REILLY_ID=${{ secrets.REILLY_ID }}' >> .env
+            echo 'GUILD_ID=${{ secrets.GUILD_ID }}' >> .env
+            echo 'CHANNEL_ID=${{ secrets.CHANNEL_ID }}' >> .env
+            echo 'REILLY_TIMEOUT_ROLE_ID=${{ secrets.REILLY_TIMEOUT_ROLE_ID }}' >> .env
 
         - name: 'Login via Azure CLI'
           uses: azure/login@v1
