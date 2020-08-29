@@ -12,8 +12,8 @@ jobs:
         - name: 'Build the app'
           uses: actions/setup-node@v1
         - run: |
-          yarn install --frozen-lockfile
-          yarn run build
+            yarn install --frozen-lockfile
+            yarn run build
           
         - name: 'Login via Azure CLI'
           uses: azure/login@v1
