@@ -14,6 +14,7 @@ ADD app/ ./app
 ADD package.json ./
 ADD tsconfig.json /
 ADD yarn.lock ./
+ADD .env ./
 
 RUN yarn install --frozen-lockfile
 
