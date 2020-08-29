@@ -10,3 +10,4 @@ Unfortunately, a dedicated voice channel where Reilly can't speak isn't enough. 
   - REILLY_ID (... Reilly's discord user id)
   - GUILD_ID (the id of the Discord server)
   - CHANNEL_ID (the id of the "shame" channel)
+  - REILLY_TIMEOUT_ROLE_ID (the id of the role to put Reilly in when in timeout)

@@ -10,7 +10,11 @@ const YT_IDS = [
   "XqZsoesa55w" /* Baby shark */,
   "tXZecmekaKw" /* Heads will roll */,
   "Jw5QXSeB6RI" /* Campfire Song Song */,
+  "oWqAf4eex14" /* Jellyfish Jam */,
 ];
+
+const TIMEOUT_COMMAND = "!timeout";
+const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
 
 /**
  *
@@ -18,12 +22,15 @@ const YT_IDS = [
  */
 export default function configure(client) {
   let IN_TIMEOUT = false;
-  let og_roles = [];
+  let OG_VOICE_CHANNEL = undefined;
+  let OG_ROLES = [];
   client.on("message", async (msg) => {
-    if (IN_TIMEOUT) {
+    if (msg.member.id === process.env.REILLY_ID) {
+      msg.reply(`<@${msg.member.id}> cannot put himself in timeout.`);
       return;
     }
-    if (msg.content.startsWith("!badreilly")) {
+    if (msg.content.startsWith(TIMEOUT_COMMAND)) {
+      const shouldEndTimeout = msg.content.startsWith(UNTIMEOUT_COMMAND);
       const guild = await getGuild(client);
       if (!guild) {
         console.log("Guild not found");
@@ -47,13 +54,48 @@ export default function configure(client) {
         console.log("Voice channel not found");
         return;
       }
+
+      const endTimeout = async () => {
+        try {
+          channel.leave();
+        } catch (e) {
+          console.error(e);
+        }
+        // restore Reilly's original roles
+        await reillyMember.roles.set(OG_ROLES);
+
+        try {
+          // put Reilly back in where he belongs (if he is currently in a channel)
+          const reillyUpdated = await getReilly(client, guild);
+          const isStillConnected = !!reillyUpdated.voice?.channelID;
+          if (isStillConnected) {
+            await reillyMember.voice?.setChannel(OG_VOICE_CHANNEL);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        IN_TIMEOUT = false;
+        msg.reply(`<@${reillyMember.id}> has served his sentence.`);
+      };
+
+      if (IN_TIMEOUT && !shouldEndTimeout) {
+        msg.reply(
+          `<@${reillyMember.id}> has yet to finish his previous sentence.`
+        );
+        return;
+      } else if (IN_TIMEOUT && shouldEndTimeout) {
+        await endTimeout();
+        return;
+      }
+
+      OG_ROLES = reillyMember.roles.cache;
+      OG_VOICE_CHANNEL = reillyMember.voice.channel;
+
       IN_TIMEOUT = true;
-      og_roles = reillyMember.roles.cache;
 
       await reillyMember.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID]);
       await reillyMember.voice.setChannel(channel);
 
-      console.log(`<@${reillyMember.id}> has been sent on timeout.`);
       msg.reply(`<@${reillyMember.id}> has been sent on timeout.`);
 
       if (channel instanceof VoiceChannel) {
@@ -65,9 +107,7 @@ export default function configure(client) {
         });
 
         dispatcher.on("finish", async () => {
-          channel.leave();
-          await reillyMember.roles.set(og_roles);
-          IN_TIMEOUT = false;
+          await endTimeout();
           dispatcher.destroy();
         });
       }

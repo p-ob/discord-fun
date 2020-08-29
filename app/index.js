@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import configureMoveCommand from "./move.js";
+import configureTimeoutCommand from "./timeout.js";
 import configureMute from "./mute.js";
 import configureChat from "./chat.js";
 import configureCoconuts from "./coconuts.js";
@@ -9,7 +9,7 @@ dotenv.config();
 
 const client = new Client();
 client.on("ready", () => {
-  configureMoveCommand(client);
+  configureTimeoutCommand(client);
   configureMute(client);
   configureChat(client);
   configureCoconuts(client);
