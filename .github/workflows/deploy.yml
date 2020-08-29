@@ -37,6 +37,7 @@ jobs:
             resource-group: ${{ secrets.RESOURCE_GROUP }}
             dns-name-label: reillybot
             image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/pobrien91/reillybot:${{ github.sha }}
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: reillybot-container
