@@ -4,6 +4,7 @@ export default class InfiniteClock {
   constructor() {
     this._cancel = false;
     this._cancellationRequested = false;
+    this._completed = false;
     this._task = undefined;
     this._running = false;
   }
@@ -12,8 +13,16 @@ export default class InfiniteClock {
     return this._running;
   }
 
-  get completed() {
+  /**
+   * Represents the Promise of the running clock (when resolved, the clock has terminated)
+   * @type {Promise<void>}
+   */
+  get runComplete() {
     return this._task;
+  }
+
+  get completed() {
+    return this._completed;
   }
 
   get cancelled() {
@@ -33,8 +42,10 @@ export default class InfiniteClock {
   /**
    *
    * @param {Function} callback
+   * @returns {Promise<void>}
    */
   start(callback) {
+    this._completed = false;
     // eslint-disable-next-line no-async-promise-executor
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
@@ -51,6 +62,7 @@ export default class InfiniteClock {
       }
       this._cancellationRequested = false;
       this._running = false;
+      this._completed = true;
       resolve();
     }));
   }
