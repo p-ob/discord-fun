@@ -19,7 +19,7 @@ export default function configure(client) {
           }
           await CLOCK_STATE.cancel();
         }
-        CLOCK_STATE.start(() => {
+        CLOCK_STATE.run(() => {
           newVoiceState.member.voice.setSelfMute(true);
         });
       }

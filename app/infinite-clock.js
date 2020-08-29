@@ -2,7 +2,6 @@ import { minutesToMilliseconds, awaitTimeout } from "./common.js";
 
 export default class InfiniteClock {
   constructor() {
-    this._cancel = false;
     this._cancellationRequested = false;
     this._completed = false;
     this._task = undefined;
@@ -25,18 +24,8 @@ export default class InfiniteClock {
     return this._completed;
   }
 
-  get cancelled() {
-    return this._cancel;
-  }
-
   get cancellationRequested() {
     return this._cancellationRequested;
-  }
-
-  cancel() {
-    this._cancellationRequested = true;
-    this._cancel = true;
-    return this._task;
   }
 
   /**
@@ -44,12 +33,13 @@ export default class InfiniteClock {
    * @param {Function} callback
    * @returns {Promise<void>}
    */
-  start(callback) {
+  run(callback) {
     this._completed = false;
+    this._cancellationRequested = false;
     // eslint-disable-next-line no-async-promise-executor
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
-      while (!this._cancel) {
+      while (!this._cancellationRequested) {
         const maxDelay = minutesToMilliseconds(10);
         const minDelay = minutesToMilliseconds(1);
         const delay =
@@ -57,13 +47,29 @@ export default class InfiniteClock {
         console.log(
           `Prepare yourself... something gonna happen in ${delay}ms.`
         );
-        await awaitTimeout(delay);
-        callback();
+        let ms = 0;
+        const interval = 10;
+        do {
+          awaitTimeout(interval);
+          ms += interval;
+        } while (ms <= delay && !this._cancellationRequested);
+        if (!this._cancellationRequested) {
+          callback();
+        }
       }
       this._cancellationRequested = false;
       this._running = false;
       this._completed = true;
       resolve();
     }));
+  }
+
+  /**
+   * Requests the running clock to cancel
+   * You can await the result of this action to know when the clock has safely terminated
+   */
+  cancel() {
+    this._cancellationRequested = true;
+    return this._task;
   }
 }
