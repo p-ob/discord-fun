@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "target": "es2017",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "strict": true,
+      "lib": ["esnext"],
+      "outDir": ".",
+    },
+    "include": ["app/**/*.ts"],
+  }
