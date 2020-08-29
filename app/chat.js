@@ -14,7 +14,9 @@ const replies = [
   "Reilly is still better at Halo than Rasta. I don't know if that's a good thing, though, tbh",
   "How can you make Halo: Combat Evolved and then fall so low...",
   "Only scrubs like Halo",
-  "OMG NO BODY CARES ABOUT HALO",
+  "OMG NOBODY CARES ABOUT HALO",
+  "Halo... not even wunce",
+  "You're a poo face",
   "♥",
   "Facts: http://forums.bungie.org/halo/archive7.pl?read=177201",
 ];

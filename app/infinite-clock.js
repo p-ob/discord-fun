@@ -6,8 +6,6 @@ export default class InfiniteClock {
     this._completed = false;
     this._task = undefined;
     this._running = false;
-    this._cancellationToken = undefined;
-    this._resolveCancellation = undefined;
   }
 
   get running() {
@@ -30,19 +28,24 @@ export default class InfiniteClock {
     return this._cancellationRequested;
   }
 
+  _makeCancellationToken() {
+    this._cancellationToken = new Promise((resolve) => {
+      this._resolveCancellation = resolve;
+    });
+  }
+
   /**
    *
    * @param {Function} callback - The function to execute on every randomize-d tick of the clock
-   * @param {object} options - Optional options for configuration; if delay is set, time randomization will be disabled
    *
-   * @returns {Promise<void>} - A promise that resolves when the clock is cancelled or restarted
+   * @returns {Promise<void>} - A promise that resolves when the clock is cancelled (or restarted)
    */
   async run(
     callback,
-    { minMs, maxMs, delayMs } = {
-      minMs: minutesToMilliseconds(1),
-      maxMs: minutesToMilliseconds(10),
-      delayMs: undefined,
+    { min, max, delay } = {
+      min: minutesToMilliseconds(1),
+      max: minutesToMilliseconds(10),
+      delay: undefined,
     }
   ) {
     await this.cancel();
@@ -52,17 +55,16 @@ export default class InfiniteClock {
     // eslint-disable-next-line no-async-promise-executor
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
-      do {
-        delayMs =
-          delayMs ?? Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+      while (!this._cancellationRequested) {
+        delay = delay ?? Math.floor(Math.random() * (max - min + 1)) + min;
         console.log(
-          `Prepare yourself... something gonna happen in ${delayMs}ms.`
+          `Prepare yourself... something gonna happen in ${delay}ms.`
         );
-        await Promise.race(awaitTimeout(delayMs), this._cancellationToken);
+        await Promise.race(awaitTimeout(delay), this._cancellationToken);
         if (!this._cancellationRequested) {
           callback();
         }
-      } while (!this._cancellationRequested);
+      }
       this._cancellationRequested = false;
       this._running = false;
       this._completed = true;
