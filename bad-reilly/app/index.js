@@ -8,12 +8,11 @@ dotenv.config();
 
 const client = new Client();
 client.on("ready", () => {
-    configureMoveCommand(client);
-    configureMute(client);
-    configureChat(client);
+  configureMoveCommand(client);
+  configureMute(client);
+  configureChat(client);
 
-    console.log("<Insert JAWS music here>");
+  console.log("<Insert JAWS music here>");
 });
-
 
 client.login(process.env.BOT_TOKEN);

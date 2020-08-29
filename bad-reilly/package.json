@@ -9,10 +9,15 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.4"
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.1"
   },
   "scripts": {
     "start": "node ./app/index.js",
-    "watch": "nodemon ./app/index.js"
+    "watch": "nodemon ./app/index.js",
+    "lint": "eslint \"app/**/*.js\""
   }
 }
