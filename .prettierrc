@@ -1,0 +1,31 @@
+{
+    "printWidth": 120,
+    "overrides": [
+      {
+        "files": "*.ts",
+        "options": {
+          "htmlWhitespaceSensitivity": "strict"
+        }
+      },
+      {
+        "files": "*.js",
+        "options": {
+          "htmlWhitespaceSensitivity": "strict"
+        }
+      },
+      {
+        "files": "*.scss",
+        "options": {
+          "parser": "scss",
+          "singleQuote": true,
+          "printWidth": 200
+        }
+      },
+      {
+        "files": "*.md",
+        "options": {
+          "printWidth": 200
+        }
+      }
+    ]
+  }

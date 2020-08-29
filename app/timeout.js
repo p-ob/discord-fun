@@ -11,6 +11,15 @@ const YT_IDS = [
   "tXZecmekaKw" /* Heads will roll */,
   "Jw5QXSeB6RI" /* Campfire Song Song */,
   "oWqAf4eex14" /* Jellyfish Jam */,
+  "l_DfCFHOD9E" /* kazoo Halo */,
+  "QH2-TGUlwu4" /* nyan cat */,
+  "cE0wfjsybIQ" /* Crab Rave */,
+  "1mrGdGMNsv0" /* Spookeh */,
+  "tV5wmDhzgY8" /* Crab people */,
+  "bfcZacwnVCk" /* Sea Shanty 2 X */,
+  "rvrZJ5C_Nwg" /* AAAAAAAAA */,
+  "UOxkGD8qRB4" /* K/DA Pop/Stars */,
+  "hqbS7O9qIXE" /* Toss a coin */,
 ];
 
 const TIMEOUT_COMMAND = "!timeout";
@@ -47,9 +56,7 @@ export default function configure(client) {
         return;
       }
 
-      const channel = guild.channels.cache.find(
-        (x) => x.id === process.env.CHANNEL_ID
-      );
+      const channel = guild.channels.cache.find((x) => x.id === process.env.CHANNEL_ID);
       if (!channel) {
         console.log("Voice channel not found");
         return;
@@ -79,9 +86,7 @@ export default function configure(client) {
       };
 
       if (IN_TIMEOUT && !shouldEndTimeout) {
-        msg.reply(
-          `<@${reillyMember.id}> has yet to finish his previous sentence.`
-        );
+        msg.reply(`<@${reillyMember.id}> has yet to finish his previous sentence.`);
         return;
       } else if (IN_TIMEOUT && shouldEndTimeout) {
         await endTimeout();

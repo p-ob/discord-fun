@@ -38,8 +38,7 @@ export default function configure(client) {
       isPaused = true;
       const maxDelay = minutesToMilliseconds(10);
       const minDelay = minutesToMilliseconds(1);
-      const delay =
-        Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+      const delay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
       setTimeout(() => {
         isPaused = false;
       }, delay);

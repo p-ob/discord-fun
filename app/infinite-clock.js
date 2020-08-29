@@ -57,9 +57,7 @@ export default class InfiniteClock {
       this._running = true;
       while (!this._cancellationRequested) {
         delay = delay ?? Math.floor(Math.random() * (max - min + 1)) + min;
-        console.log(
-          `Prepare yourself... something gonna happen in ${delay}ms.`
-        );
+        console.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
         await Promise.race(awaitTimeout(delay), this._cancellationToken);
         if (!this._cancellationRequested) {
           callback();
