@@ -50,7 +50,7 @@ export default class InfiniteClock {
         let ms = 0;
         const interval = 10;
         do {
-          awaitTimeout(interval);
+          await awaitTimeout(interval);
           ms += interval;
         } while (ms <= delay && !this._cancellationRequested);
         if (!this._cancellationRequested) {
