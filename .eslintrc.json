@@ -16,5 +16,6 @@
     "sourceType": "module",
     "ecmaVersion": 2020
   },
-  "plugins": ["prettier"]
+  "plugins": ["prettier"],
+  "parser": "@typescript-eslint/parser"
 }
