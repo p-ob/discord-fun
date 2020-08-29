@@ -1,4 +1,4 @@
-import * as ytdl from "ytdl-core";
+import ytdl from "ytdl-core";
 import type { Guild, Client } from "discord.js";
 
 export function getGuild(client: Client) {

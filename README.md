@@ -2,6 +2,10 @@
 
 Unfortunately, a dedicated voice channel where Reilly can't speak isn't enough. Let's solve that 😈
 
+## TODOs
+- [ ] GitHub actions (build, etc.)
+- [ ] deployment (I don't want to host this bot on my machine)
+
 ## Notes
 
 - Uses discord.js NodeJS client (https://discord.js.org/)
