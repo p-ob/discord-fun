@@ -1,5 +1,6 @@
-import { Client, VoiceChannel } from "discord.js";
+import { VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "./common.js";
+import type { Client, Collection, Role } from "discord.js";
 
 const YT_IDS = [
   "KaqC5FnvAEc" /* Trolling Saruman */,
@@ -29,13 +30,13 @@ const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
  *
  * @param {Client} client
  */
-export default function configure(client) {
+export default function configure(client: Client) {
   let IN_TIMEOUT = false;
-  let OG_VOICE_CHANNEL = undefined;
-  let OG_ROLES = [];
+  let OG_VOICE_CHANNEL: VoiceChannel | undefined = undefined;
+  let OG_ROLES: Collection<string, Role> | undefined = undefined;
   client.on("message", async (msg) => {
-    if (msg.member.id === process.env.REILLY_ID) {
-      msg.reply(`<@${msg.member.id}> cannot put himself in timeout.`);
+    if (msg.member?.id === process.env.REILLY_ID) {
+      msg.reply(`<@${msg.member?.id}> cannot put himself in timeout.`);
       return;
     }
     if (msg.content.startsWith(TIMEOUT_COMMAND)) {
@@ -64,18 +65,24 @@ export default function configure(client) {
 
       const endTimeout = async () => {
         try {
-          channel.leave();
+          (channel as VoiceChannel).leave();
         } catch (e) {
           console.error(e);
         }
-        // restore Reilly's original roles
-        await reillyMember.roles.set(OG_ROLES);
+        try {
+          // restore Reilly's original roles
+          if (OG_ROLES) {
+            await reillyMember.roles.set(OG_ROLES);
+          }
+        } catch (err) {
+          console.error(err);
+        }
 
         try {
           // put Reilly back in where he belongs (if he is currently in a channel)
           const reillyUpdated = await getReilly(client, guild);
           const isStillConnected = !!reillyUpdated.voice?.channelID;
-          if (isStillConnected) {
+          if (isStillConnected && OG_VOICE_CHANNEL) {
             await reillyMember.voice?.setChannel(OG_VOICE_CHANNEL);
           }
         } catch (e) {
@@ -94,11 +101,11 @@ export default function configure(client) {
       }
 
       OG_ROLES = reillyMember.roles.cache;
-      OG_VOICE_CHANNEL = reillyMember.voice.channel;
+      OG_VOICE_CHANNEL = reillyMember.voice.channel as VoiceChannel;
 
       IN_TIMEOUT = true;
 
-      await reillyMember.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID]);
+      await reillyMember.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
       await reillyMember.voice.setChannel(channel);
 
       msg.reply(`<@${reillyMember.id}> has been sent on timeout.`);

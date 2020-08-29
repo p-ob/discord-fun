@@ -1,5 +1,5 @@
-import { Client } from "discord.js";
 import { awaitTimeout, minutesToMilliseconds, randomItem } from "./common.js";
+import type { Client } from "discord.js";
 
 const replies = [
   "Halo sucks",
@@ -21,11 +21,7 @@ const replies = [
   "Facts: http://forums.bungie.org/halo/archive7.pl?read=177201",
 ];
 
-/**
- *
- * @param {Client} client
- */
-export default function configure(client) {
+export default function configure(client: Client) {
   let isPaused = false;
   client.on("message", async (msg) => {
     if (isPaused) {

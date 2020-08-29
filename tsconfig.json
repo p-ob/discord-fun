@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "target": "es2017",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "strict": true,
+      "lib": ["esnext"],
+      "outDir": "./app",
+      "importsNotUsedAsValues": "error"
+    },
+    "include": ["app/**/*.ts"],
+    "exclude": ["node_modules/**"]
+  }

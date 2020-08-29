@@ -11,16 +11,21 @@
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
+    "@types/ws": "^7.2.6",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
     "dotenv": "^8.2.0",
     "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.4",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.1",
+    "typescript": "^4.0.2"
   },
   "scripts": {
+    "build": "tsc",
     "start": "node ./app/index.js",
     "watch": "nodemon ./app/index.js",
-    "lint": "eslint \"app/**/*.js\""
+    "lint": "eslint \"app/**/*.ts\""
   }
 }

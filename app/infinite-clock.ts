@@ -1,6 +1,13 @@
 import { minutesToMilliseconds, awaitTimeout } from "./common.js";
 
 export default class InfiniteClock {
+  _cancellationRequested: boolean;
+  _completed: boolean;
+  _task?: Promise<void>;
+  _running: boolean;
+  _cancellationToken?: Promise<void>;
+  _resolveCancellation?: Function;
+
   constructor() {
     this._cancellationRequested = false;
     this._completed = false;
@@ -34,18 +41,12 @@ export default class InfiniteClock {
     });
   }
 
-  /**
-   *
-   * @param {Function} callback - The function to execute on every randomize-d tick of the clock
-   *
-   * @returns {Promise<void>} - A promise that resolves when the clock is cancelled (or restarted)
-   */
   async run(
-    callback,
+    callback: Function,
     { min, max, delay } = {
-      min: minutesToMilliseconds(1),
-      max: minutesToMilliseconds(10),
-      delay: undefined,
+      min: minutesToMilliseconds(1) as number | undefined,
+      max: minutesToMilliseconds(10) as number | undefined,
+      delay: undefined as number | undefined,
     }
   ) {
     await this.cancel();
@@ -56,9 +57,9 @@ export default class InfiniteClock {
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
       while (!this._cancellationRequested) {
-        delay = delay ?? Math.floor(Math.random() * (max - min + 1)) + min;
+        delay = delay ?? Math.floor(Math.random() * (max! - min! + 1)) + min!;
         console.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
-        await Promise.race(awaitTimeout(delay), this._cancellationToken);
+        await Promise.race([awaitTimeout(delay), this._cancellationToken]);
         if (!this._cancellationRequested) {
           callback();
         }
