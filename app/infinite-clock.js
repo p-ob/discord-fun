@@ -33,7 +33,9 @@ export default class InfiniteClock {
    * @param {Function} callback
    * @returns {Promise<void>}
    */
-  run(callback) {
+  async run(callback) {
+    await this.cancel();
+    this._makeCancellationToken();
     this._completed = false;
     this._cancellationRequested = false;
     // eslint-disable-next-line no-async-promise-executor
@@ -47,12 +49,7 @@ export default class InfiniteClock {
         console.log(
           `Prepare yourself... something gonna happen in ${delay}ms.`
         );
-        let ms = 0;
-        const interval = 10;
-        do {
-          await awaitTimeout(interval);
-          ms += interval;
-        } while (ms <= delay && !this._cancellationRequested);
+        await Promise.race(awaitTimeout(delay), this._cancellationToken);
         if (!this._cancellationRequested) {
           callback();
         }
@@ -70,6 +67,7 @@ export default class InfiniteClock {
    */
   cancel() {
     this._cancellationRequested = true;
+    this._resolveCancellation?.();
     return this._task;
   }
 }
