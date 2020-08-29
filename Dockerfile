@@ -1,5 +1,7 @@
 FROM ubuntu:bionic
 
+WORKDIR /usr/src/app
+
 # 1. Install node14
 RUN apt-get update && apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
@@ -18,4 +20,4 @@ ADD .env ./
 
 RUN yarn install --frozen-lockfile
 
-ENTRYPOINT [ "yarn", "run", "start" ]
+CMD [ "yarn", "run", "start" ]
