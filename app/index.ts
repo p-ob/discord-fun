@@ -5,7 +5,7 @@ import configureChat from "./actions/chat.js";
 import configureCoconuts from "./actions/coconuts.js";
 import configureDisconnect from "./actions/disconnect.js";
 import dotenv from "dotenv";
-import { Logger } from "./logger.js";
+import Logger from "./logger.js";
 
 dotenv.config();
 

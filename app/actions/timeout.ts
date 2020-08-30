@@ -1,6 +1,6 @@
 import { VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
-import { Logger } from "../logger.js";
+import Logger from "../logger.js";
 import type { GuildMember, Client, Collection, Role, StreamDispatcher } from "discord.js";
 
 const YT_IDS = [
@@ -22,6 +22,11 @@ const YT_IDS = [
   "rvrZJ5C_Nwg" /* AAAAAAAAA */,
   "UOxkGD8qRB4" /* K/DA Pop/Stars */,
   "hqbS7O9qIXE" /* Toss a coin */,
+  "o7cCJqya7wc" /* Look at my horse */,
+  "BEm0AjTbsac" /* Misty Mtns */,
+  "BBGEG21CGo0" /* epic sax */,
+  "ZZ5LpwO-An4" /* HEYYEYAAEYAAAEYAEYAA */,
+  "I1188GO4p1E" /* Get Schwifty */,
 ];
 
 const TIMEOUT_COMMAND = "!timeout";
