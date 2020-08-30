@@ -1,4 +1,4 @@
-import { MessageAttachment, VoiceChannel } from "discord.js";
+import { MessageEmbed, VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
 import Logger from "../logger.js";
 import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
@@ -29,7 +29,14 @@ const YT_IDS = [
   "I1188GO4p1E" /* Get Schwifty */,
 ];
 
-const gif_403 = "https://tenor.com/view/you-have-no-power-here-lotr-the-lord-of-the-rings-gandalf-gif-17924404";
+const gifs_403 = [
+  "https://tenor.com/view/you-have-no-power-here-lotr-the-lord-of-the-rings-gandalf-gif-17924404" /* You have no power here */,
+  "https://tenor.com/view/grin-you-have-no-power-here-look-at-that-gif-11382585" /* Troy Chuckle */,
+  "https://tenor.com/view/ah-ahahah-youdidntsaythemagicword-magicword-jurassicpark-gif-9628120" /* ah ah ah */,
+  "https://tenor.com/view/nicetry-lawyer-harveyspecter-gif-4755413" /* Harvey Spectre */,
+  "https://tenor.com/view/joaquin-phoenix-gladiator-thumbs-down-gif-13238004" /* Gladiator */,
+  "https://tenor.com/view/inauguration-cnn2017-donald-trump-finger-wag-no-gif-7576946" /* Trump */,
+];
 
 const TIMEOUT_COMMAND = "!timeout";
 const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
@@ -85,7 +92,11 @@ class TimeoutAction {
     }
 
     if ([this._client.user?.id, process.env.GOD_ID].includes(member.id)) {
-      await msg.reply(new MessageAttachment(gif_403));
+      const gif = randomItem(gifs_403);
+      const embed = new MessageEmbed({
+        url: gif,
+      });
+      await msg.reply(embed);
       return;
     }
 
