@@ -70,7 +70,7 @@ class TimeoutAction {
     });
   }
 
-  async _handleTimeoutCommand(msg: Message) {
+  private async _handleTimeoutCommand(msg: Message) {
     if (msg.author.id === process.env.REILLY_ID) {
       msg.reply(`<@${msg.author.id}> can't put people into timeout.`);
       return;
@@ -131,11 +131,11 @@ class TimeoutAction {
 
     timeoutData.originalRoles = member.roles.cache;
     timeoutData.originalVoiceChannel = member.voice.channel as VoiceChannel;
-    timeoutData.timedOut = true;
     await this._startTimeout(member, msg);
+    timeoutData.timedOut = true;
   }
 
-  async _startTimeout(member: GuildMember, msg: Message) {
+  private async _startTimeout(member: GuildMember, msg: Message) {
     await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
     await member.voice.setChannel(this._channel!);
 
@@ -158,7 +158,7 @@ class TimeoutAction {
     }
   }
 
-  async _endTimeout(userId: string, msg: Message) {
+  private async _endTimeout(userId: string, msg: Message) {
     const userTimeoutData = this._userStateLookup[userId];
     const member = await this._guild!.members.fetch({
       user: userId,
@@ -173,6 +173,9 @@ class TimeoutAction {
       // restore the user's original roles
       if (userTimeoutData.originalRoles) {
         await member.roles.set(userTimeoutData.originalRoles);
+      } else {
+        // if we can't restore, at least pull the shame role off
+        await member.roles.remove(process.env.REILLY_TIMEOUT_ROLE_ID!);
       }
     } catch (err) {
       Logger.error(err);

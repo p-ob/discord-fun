@@ -1,4 +1,5 @@
 import { awaitTimeout, minutesToMilliseconds, randomItem } from "../common.js";
+import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
 const replies = [
@@ -25,6 +26,7 @@ export default function configure(client: Client) {
   let isPaused = false;
   client.on("message", async (msg) => {
     if (isPaused) {
+      Logger.log("The troll is resting...");
       return;
     }
     if (msg.author.id === process.env.REILLY_ID) {

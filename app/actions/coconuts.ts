@@ -1,4 +1,5 @@
 import { getYouTubeStream } from "../common.js";
+import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
 const SHORT_YT_ID = "pmyOHqgidYQ";
@@ -25,6 +26,8 @@ export default function configure(client: Client) {
           channel.leave();
           dispatcher.destroy();
         });
+      } else {
+        Logger.log("A channel could not be found to connect to.");
       }
     }
   });
