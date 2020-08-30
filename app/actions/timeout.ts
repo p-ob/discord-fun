@@ -1,5 +1,5 @@
 import { VoiceChannel } from "discord.js";
-import { getGuild, getReilly, getYouTubeStream, randomItem } from "./common.js";
+import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common";
 import type { GuildMember, Client, Collection, Role, StreamDispatcher } from "discord.js";
 
 const YT_IDS = [

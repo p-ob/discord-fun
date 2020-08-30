@@ -1,9 +1,9 @@
 import { Client } from "discord.js";
-import configureTimeoutCommand from "./timeout.js";
-import configureMute from "./mute.js";
-import configureChat from "./chat.js";
-import configureCoconuts from "./coconuts.js";
-import configureDisconnect from "./disconnect.js";
+import configureTimeoutCommand from "./actions/timeout";
+import configureMute from "./actions/mute";
+import configureChat from "./actions/chat";
+import configureCoconuts from "./actions/coconuts";
+import configureDisconnect from "./actions/disconnect";
 import dotenv from "dotenv";
 
 dotenv.config();

@@ -1,4 +1,4 @@
-import InfiniteClock from "./infinite-clock.js";
+import InfiniteClock from "../infinite-clock";
 import type { Client } from "discord.js";
 
 export default function configure(client: Client) {

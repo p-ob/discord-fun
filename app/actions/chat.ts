@@ -1,4 +1,4 @@
-import { awaitTimeout, minutesToMilliseconds, randomItem } from "./common.js";
+import { awaitTimeout, minutesToMilliseconds, randomItem } from "../common";
 import type { Client } from "discord.js";
 
 const replies = [
