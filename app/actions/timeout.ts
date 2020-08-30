@@ -31,12 +31,14 @@ const YT_IDS = [
 ];
 
 const gifs_403 = [
-  "https://thumbs.gfycat.com/DenseElectricAnglerfish-mobile.mp4" /* You have no power here */,
-  "https://thumbs.gfycat.com/AdorableActiveHawk-mobile.mp4" /* Troy Chuckle */,
-  "https://thumbs.gfycat.com/BackAnimatedJapanesebeetle-mobile.mp4" /* ah ah ah */,
-  "https://thumbs.gfycat.com/FeminineFragrantGeese-mobile.mp4" /* Gladiator */,
-  "https://thumbs.gfycat.com/BlaringGenuineHawaiianmonkseal-mobile.mp4" /* Trump */,
-  "https://thumbs.gfycat.com/TangibleSecondhandIvorygull-mobile.mp4" /* Colbert */,
+  "https://media1.giphy.com/media/XWXnf6hRiKBJS/giphy.gif" /* You have no power here */,
+  "https://media.tenor.com/images/23c71973d91d01b2cec29e285cd71196/tenor.gif" /* Troy Chuckle */,
+  "https://media1.tenor.com/images/138aed5d9c9056183cd874bc8dd31979/tenor.gif" /* ah ah ah */,
+  "https://media1.tenor.com/images/a45e05b55e74a44fcff40d66592b3422/tenor.gif" /* Harvey Spectre */,
+  "https://media1.tenor.com/images/f1c5cabe90250283d620ed62c603295f/tenor.gif" /* Gladiator */,
+  "https://media1.tenor.com/images/adb9c5362d7df68690ad39014189b334/tenor.gif" /* Trump */,
+  "https://media1.tenor.com/images/3595514258c97c4140953d8d97efc4a6/tenor.gif" /* Scooby */,
+  "https://media1.tenor.com/images/5a798559927f7131ab19698cdc5b9203/tenor.gif" /* Colbert */,
 ];
 
 const TIMEOUT_COMMAND = "!timeout";
