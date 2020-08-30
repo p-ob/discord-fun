@@ -131,14 +131,19 @@ class TimeoutAction {
 
     timeoutData.originalRoles = member.roles.cache;
     timeoutData.originalVoiceChannel = member.voice.channel as VoiceChannel;
-
     timeoutData.timedOut = true;
+    await this._startTimeout(member, msg);
+  }
+
+  async _startTimeout(member: GuildMember, msg: Message) {
+    await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
+    await member.voice.setChannel(this._channel!);
 
     msg.reply(`<@${member.id}> has been sent on timeout.`);
 
     // we shouldn't connect the bot if someone else is currently enjoying the fun :)
     if (!this._dispatcher && this._channel instanceof VoiceChannel) {
-      this._guild.voice?.channel?.leave();
+      this._guild!.voice?.channel?.leave();
       const connection = await this._channel.join();
       const ytId = randomItem(YT_IDS);
       this._dispatcher = connection.play(getYouTubeStream(ytId), {
@@ -174,7 +179,7 @@ class TimeoutAction {
     }
 
     try {
-      // put the user back in where he belongs (if he is currently in a channel)
+      // put the user back in where they belong (if they are currently in a channel)
       const isStillConnected = !!member.voice?.channelID;
       if (isStillConnected && userTimeoutData.originalVoiceChannel) {
         await member.voice?.setChannel(userTimeoutData.originalVoiceChannel);
@@ -184,10 +189,5 @@ class TimeoutAction {
     }
     userTimeoutData.timedOut = false;
     msg.reply(`<@${member.id}> has served his sentence.`);
-  }
-
-  async _startTimeout(member: GuildMember) {
-    await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
-    await member.voice.setChannel(this._channel!);
   }
 }

@@ -3,7 +3,7 @@
 Unfortunately, a dedicated voice channel where Reilly can't speak isn't enough. Let's solve that 😈
 
 ## TODOs
-- [ ] come up with more todos
+- [ ] Refactor this repo to have a single "mediator" to enable easier testing (e.g. `!test <actionname>` in Discord chat)
 
 ## Notes
 
