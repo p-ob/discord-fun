@@ -1,4 +1,4 @@
-import { VoiceChannel } from "discord.js";
+import { MessageAttachment, VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
 import Logger from "../logger.js";
 import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
@@ -28,6 +28,8 @@ const YT_IDS = [
   "ZZ5LpwO-An4" /* HEYYEYAAEYAAAEYAEYAA */,
   "I1188GO4p1E" /* Get Schwifty */,
 ];
+
+const gif_403 = "https://tenor.com/view/you-have-no-power-here-lotr-the-lord-of-the-rings-gandalf-gif-17924404";
 
 const TIMEOUT_COMMAND = "!timeout";
 const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
@@ -83,7 +85,7 @@ class TimeoutAction {
     }
 
     if ([this._client.user?.id, process.env.GOD_ID].includes(member.id)) {
-      msg.reply("You have no power here!");
+      await msg.reply(new MessageAttachment(gif_403));
       return;
     }
 
