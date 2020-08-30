@@ -84,7 +84,7 @@ export default function configure(client: Client) {
         try {
           (channel as VoiceChannel).leave();
         } catch (e) {
-          console.error(e);
+          Logger.error(e);
         }
         try {
           // restore the user's original roles
@@ -92,7 +92,7 @@ export default function configure(client: Client) {
             await member.roles.set(timeoutData.originalRoles);
           }
         } catch (err) {
-          console.error(err);
+          Logger.error(err);
         }
 
         try {
@@ -106,7 +106,7 @@ export default function configure(client: Client) {
             await updatedMember.voice?.setChannel(timeoutData.originalVoiceChannel);
           }
         } catch (e) {
-          console.error(e);
+          Logger.error(e);
         }
         timeoutData.timedOut = false;
         msg.reply(`<@${member.id}> has served his sentence.`);
