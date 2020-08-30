@@ -22,6 +22,7 @@ jobs:
             echo 'GUILD_ID=${{ secrets.GUILD_ID }}' >> .env
             echo 'CHANNEL_ID=${{ secrets.CHANNEL_ID }}' >> .env
             echo 'REILLY_TIMEOUT_ROLE_ID=${{ secrets.REILLY_TIMEOUT_ROLE_ID }}' >> .env
+            echo 'GOD_ID=${{ secrets.GOD_ID }}' >> .env
 
         - name: 'Login via Azure CLI'
           uses: azure/login@v1

@@ -1,12 +1,12 @@
 import { minutesToMilliseconds, awaitTimeout } from "./common.js";
 
 export default class InfiniteClock {
-  _cancellationRequested: boolean;
-  _completed: boolean;
-  _task?: Promise<void>;
-  _running: boolean;
-  _cancellationToken?: Promise<void>;
-  _resolveCancellation?: Function;
+  private _cancellationRequested: boolean;
+  private _completed: boolean;
+  private _task?: Promise<void>;
+  private _running: boolean;
+  private _cancellationToken?: Promise<void>;
+  private _resolveCancellation?: Function;
 
   constructor() {
     this._cancellationRequested = false;
@@ -35,7 +35,7 @@ export default class InfiniteClock {
     return this._cancellationRequested;
   }
 
-  _makeCancellationToken() {
+  private _makeCancellationToken() {
     this._cancellationToken = new Promise((resolve) => {
       this._resolveCancellation = resolve;
     });
