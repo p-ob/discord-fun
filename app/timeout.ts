@@ -1,6 +1,6 @@
 import { VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "./common.js";
-import type { GuildMember, Client, Collection, Role, User } from "discord.js";
+import type { GuildMember, Client, Collection, Role, StreamDispatcher } from "discord.js";
 
 const YT_IDS = [
   "KaqC5FnvAEc" /* Trolling Saruman */,
@@ -28,6 +28,7 @@ const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
 
 export default function configure(client: Client) {
   const userTimeoutLookup: { [userId: string]: UserTimeoutCache } = {};
+  let dispatcher: StreamDispatcher | undefined;
   // let IN_TIMEOUT = false;
   // let OG_VOICE_CHANNEL: VoiceChannel | undefined = undefined;
   // let OG_ROLES: Collection<string, Role> | undefined = undefined;
@@ -122,17 +123,19 @@ export default function configure(client: Client) {
 
       msg.reply(`<@${member.id}> has been sent on timeout.`);
 
-      if (channel instanceof VoiceChannel) {
+      // we shouldn't connect the bot if someone else is currently enjoying the fun :)
+      if (!dispatcher && channel instanceof VoiceChannel) {
         guild.voice?.channel?.leave();
         const connection = await channel.join();
         const ytId = randomItem(YT_IDS);
-        const dispatcher = connection.play(getYouTubeStream(ytId), {
+        dispatcher = connection.play(getYouTubeStream(ytId), {
           volume: 0.5,
         });
 
         dispatcher.on("finish", async () => {
           await endTimeout();
-          dispatcher.destroy();
+          dispatcher?.destroy();
+          dispatcher = undefined;
         });
       }
     }
