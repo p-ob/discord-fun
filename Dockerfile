@@ -12,11 +12,11 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt update && apt install yarn -y --no-install-recommends
 
-COPY app ./app
-ADD package.json ./
-ADD tsconfig.json /
-ADD yarn.lock ./
-ADD .env ./
+COPY package.json ./
+COPY tsconfig.json /
+COPY yarn.lock ./
+COPY .env ./
+COPY app/ ./app/
 
 RUN yarn install --frozen-lockfile
 
