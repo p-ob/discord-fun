@@ -57,7 +57,7 @@ export default function configure(client: Client) {
         return;
       }
 
-      if (member.id === client.user?.id) {
+      if ([client.user?.id, process.env.GOD_ID].includes(member.id)) {
         msg.reply("You have no power here!");
         return;
       }
