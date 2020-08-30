@@ -29,12 +29,10 @@ const UNTIMEOUT_COMMAND = `${TIMEOUT_COMMAND} cancel`;
 export default function configure(client: Client) {
   const userTimeoutLookup: { [userId: string]: UserTimeoutCache } = {};
   let dispatcher: StreamDispatcher | undefined;
-  // let IN_TIMEOUT = false;
-  // let OG_VOICE_CHANNEL: VoiceChannel | undefined = undefined;
-  // let OG_ROLES: Collection<string, Role> | undefined = undefined;
+
   client.on("message", async (msg) => {
-    if (msg.member?.id === process.env.REILLY_ID) {
-      msg.reply(`<@${msg.member?.id}> can't put people into timeout.`);
+    if (msg.author.id === process.env.REILLY_ID) {
+      msg.reply(`<@${msg.author.id}> can't put people into timeout.`);
       return;
     }
     if (msg.content.startsWith(TIMEOUT_COMMAND)) {

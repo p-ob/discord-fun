@@ -27,13 +27,13 @@ export default function configure(client: Client) {
     if (isPaused) {
       return;
     }
-    if (msg.member?.id === process.env.REILLY_ID) {
+    if (msg.author.id === process.env.REILLY_ID) {
       const reply = randomItem(replies);
       await awaitTimeout(100);
       const p = msg.reply(reply);
       isPaused = true;
-      const maxDelay = minutesToMilliseconds(10);
-      const minDelay = minutesToMilliseconds(1);
+      const maxDelay = minutesToMilliseconds(20);
+      const minDelay = minutesToMilliseconds(2);
       const delay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
       setTimeout(() => {
         isPaused = false;
