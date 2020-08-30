@@ -1,7 +1,7 @@
 import { VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
 import Logger from "../logger.js";
-import type { GuildMember, Client, Collection, Role, StreamDispatcher } from "discord.js";
+import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
 
 const YT_IDS = [
   "KaqC5FnvAEc" /* Trolling Saruman */,
@@ -85,43 +85,11 @@ export default function configure(client: Client) {
         userTimeoutLookup[member.id] = timeoutData;
       }
 
-      const endTimeout = async () => {
-        try {
-          (channel as VoiceChannel).leave();
-        } catch (e) {
-          Logger.error(e);
-        }
-        try {
-          // restore the user's original roles
-          if (timeoutData.originalRoles) {
-            await member.roles.set(timeoutData.originalRoles);
-          }
-        } catch (err) {
-          Logger.error(err);
-        }
-
-        try {
-          // put the user back in where he belongs (if he is currently in a channel)
-          const updatedMember = await guild.members.fetch({
-            user: member.id,
-            force: true,
-          });
-          const isStillConnected = !!updatedMember.voice?.channelID;
-          if (isStillConnected && timeoutData.originalVoiceChannel) {
-            await updatedMember.voice?.setChannel(timeoutData.originalVoiceChannel);
-          }
-        } catch (e) {
-          Logger.error(e);
-        }
-        timeoutData.timedOut = false;
-        msg.reply(`<@${member.id}> has served his sentence.`);
-      };
-
       if (timeoutData.timedOut && !shouldEndTimeout) {
         msg.reply(`<@${member.id}> has yet to finish his previous sentence.`);
         return;
       } else if (timeoutData.timedOut && shouldEndTimeout) {
-        await endTimeout();
+        await endTimeout(member.id, msg, channel as VoiceChannel, guild);
         return;
       }
 
@@ -145,13 +113,47 @@ export default function configure(client: Client) {
         });
 
         dispatcher.on("finish", async () => {
-          await endTimeout();
+          await endTimeout(member.id, msg, channel, guild);
           dispatcher?.destroy();
           dispatcher = undefined;
         });
       }
     }
   });
+
+  async function endTimeout(userId: string, msg: Message, channel: VoiceChannel, guild: Guild) {
+    const userTimeoutData = userTimeoutLookup[userId];
+    const member = await guild.members.fetch(userId);
+    try {
+      (channel as VoiceChannel).leave();
+    } catch (e) {
+      Logger.error(e);
+    }
+    try {
+      // restore the user's original roles
+      if (userTimeoutData.originalRoles) {
+        await member.roles.set(userTimeoutData.originalRoles);
+      }
+    } catch (err) {
+      Logger.error(err);
+    }
+
+    try {
+      // put the user back in where he belongs (if he is currently in a channel)
+      const updatedMember = await guild.members.fetch({
+        user: member.id,
+        force: true,
+      });
+      const isStillConnected = !!updatedMember.voice?.channelID;
+      if (isStillConnected && userTimeoutData.originalVoiceChannel) {
+        await updatedMember.voice?.setChannel(userTimeoutData.originalVoiceChannel);
+      }
+    } catch (e) {
+      Logger.error(e);
+    }
+    userTimeoutData.timedOut = false;
+    msg.reply(`<@${member.id}> has served his sentence.`);
+  }
 }
 
 type UserTimeoutCache = {
