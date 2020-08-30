@@ -57,6 +57,10 @@ export default function configure(client: Client) {
         return;
       }
 
+      if (member.id === client.user?.id) {
+        msg.reply("You have no power here!");
+      }
+
       if (!member.voice?.channelID) {
         console.log("Reilly not in voice chat");
         return;
