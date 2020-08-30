@@ -93,10 +93,9 @@ class TimeoutAction {
 
     if ([this._client.user?.id, process.env.GOD_ID].includes(member.id)) {
       const gif = randomItem(gifs_403);
-      const embed = new MessageEmbed({
-        url: gif,
-      });
-      await msg.reply(embed);
+      const embed = new MessageEmbed();
+      embed.setURL(gif);
+      await msg.channel.send(`${msg.author}, `, embed);
       return;
     }
 
