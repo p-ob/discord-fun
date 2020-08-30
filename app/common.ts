@@ -2,7 +2,7 @@ import ytdl from "ytdl-core";
 import type { Guild, Client } from "discord.js";
 
 export function getGuild(client: Client) {
-  return client.guilds.fetch(process.env.GUILD_ID!, true);
+  return client.guilds.fetch(process.env.GUILD_ID!);
 }
 
 export async function getReilly(client: Client, guild: Guild) {
@@ -14,7 +14,7 @@ export async function getReilly(client: Client, guild: Guild) {
   }
   const reillyMember = await guild.members.fetch({
     user: process.env.REILLY_ID!,
-    cache: true,
+    force: true,
   });
   return reillyMember;
 }

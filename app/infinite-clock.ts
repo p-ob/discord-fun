@@ -1,4 +1,5 @@
 import { minutesToMilliseconds, awaitTimeout } from "./common.js";
+import { Logger } from "./logger.js";
 
 export default class InfiniteClock {
   private _cancellationRequested: boolean;
@@ -55,14 +56,14 @@ export default class InfiniteClock {
     // eslint-disable-next-line no-async-promise-executor
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
-      while (!this._cancellationRequested) {
+      do {
         delay = delay ?? Math.floor(Math.random() * (max! - min! + 1)) + min!;
-        console.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
+        Logger.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
         await Promise.race([awaitTimeout(delay), this._cancellationToken]);
         if (!this._cancellationRequested) {
           callback();
         }
-      }
+      } while (!this._cancellationRequested);
       this._cancellationRequested = false;
       this._running = false;
       this._completed = true;

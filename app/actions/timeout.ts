@@ -1,5 +1,6 @@
 import { VoiceChannel } from "discord.js";
 import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
+import { Logger } from "../logger.js";
 import type { GuildMember, Client, Collection, Role, StreamDispatcher } from "discord.js";
 
 const YT_IDS = [
@@ -40,7 +41,7 @@ export default function configure(client: Client) {
 
       const guild = await getGuild(client);
       if (!guild) {
-        console.log("Guild not found");
+        Logger.log("Guild not found");
         return;
       }
       let member: GuildMember;
@@ -51,7 +52,7 @@ export default function configure(client: Client) {
         member = await getReilly(client, guild);
       }
       if (!member) {
-        console.log("User not found");
+        Logger.log("User not found");
         return;
       }
 
@@ -61,13 +62,13 @@ export default function configure(client: Client) {
       }
 
       if (!member.voice?.channelID) {
-        console.log("Reilly not in voice chat");
+        Logger.log("User not in voice chat");
         return;
       }
 
       const channel = guild.channels.cache.find((x) => x.id === process.env.CHANNEL_ID);
       if (!channel) {
-        console.log("Voice channel not found");
+        Logger.log("Voice channel not found");
         return;
       }
 
@@ -86,7 +87,7 @@ export default function configure(client: Client) {
           console.error(e);
         }
         try {
-          // restore Reilly's original roles
+          // restore the user's original roles
           if (timeoutData.originalRoles) {
             await member.roles.set(timeoutData.originalRoles);
           }
@@ -95,8 +96,11 @@ export default function configure(client: Client) {
         }
 
         try {
-          // put Reilly back in where he belongs (if he is currently in a channel)
-          const updatedMember = await guild.members.fetch(member.id);
+          // put the user back in where he belongs (if he is currently in a channel)
+          const updatedMember = await guild.members.fetch({
+            user: member.id,
+            force: true,
+          });
           const isStillConnected = !!updatedMember.voice?.channelID;
           if (isStillConnected && timeoutData.originalVoiceChannel) {
             await updatedMember.voice?.setChannel(timeoutData.originalVoiceChannel);

@@ -1,11 +1,12 @@
 import InfiniteClock from "../infinite-clock.js";
+import { Logger } from "../logger.js";
 import type { Client } from "discord.js";
 
 export default function configure(client: Client) {
   const CLOCK_STATE = new InfiniteClock();
   client.on("voiceStateUpdate", async (oldVoiceState, newVoiceState) => {
     if (oldVoiceState.member?.id === process.env.REILLY_ID) {
-      console.log("And so it begins...");
+      Logger.log("And so it begins...");
       const channelChange = oldVoiceState.channelID !== newVoiceState.channelID;
       if (channelChange) {
         if (CLOCK_STATE?.running) {

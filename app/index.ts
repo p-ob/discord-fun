@@ -5,6 +5,7 @@ import configureChat from "./actions/chat.js";
 import configureCoconuts from "./actions/coconuts.js";
 import configureDisconnect from "./actions/disconnect.js";
 import dotenv from "dotenv";
+import { Logger } from "./logger.js";
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ client.on("ready", () => {
   configureCoconuts(client);
   configureDisconnect(client);
 
-  console.log("<Insert JAWS music here>");
+  Logger.log("<Insert JAWS music here>");
 });
 
 client.login(process.env.BOT_TOKEN);
