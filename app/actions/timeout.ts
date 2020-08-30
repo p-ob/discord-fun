@@ -30,12 +30,12 @@ const YT_IDS = [
 ];
 
 const gifs_403 = [
-  "https://tenor.com/view/you-have-no-power-here-lotr-the-lord-of-the-rings-gandalf-gif-17924404" /* You have no power here */,
-  "https://tenor.com/view/grin-you-have-no-power-here-look-at-that-gif-11382585" /* Troy Chuckle */,
-  "https://tenor.com/view/ah-ahahah-youdidntsaythemagicword-magicword-jurassicpark-gif-9628120" /* ah ah ah */,
-  "https://tenor.com/view/nicetry-lawyer-harveyspecter-gif-4755413" /* Harvey Spectre */,
-  "https://tenor.com/view/joaquin-phoenix-gladiator-thumbs-down-gif-13238004" /* Gladiator */,
-  "https://tenor.com/view/inauguration-cnn2017-donald-trump-finger-wag-no-gif-7576946" /* Trump */,
+  "https://thumbs.gfycat.com/DenseElectricAnglerfish-mobile.mp4" /* You have no power here */,
+  "https://thumbs.gfycat.com/AdorableActiveHawk-mobile.mp4" /* Troy Chuckle */,
+  "https://thumbs.gfycat.com/BackAnimatedJapanesebeetle-mobile.mp4" /* ah ah ah */,
+  "https://thumbs.gfycat.com/FeminineFragrantGeese-mobile.mp4" /* Gladiator */,
+  "https://thumbs.gfycat.com/BlaringGenuineHawaiianmonkseal-mobile.mp4" /* Trump */,
+  "https://thumbs.gfycat.com/TangibleSecondhandIvorygull-mobile.mp4" /* Colbert */,
 ];
 
 const TIMEOUT_COMMAND = "!timeout";
@@ -94,7 +94,7 @@ class TimeoutAction {
     if ([this._client.user?.id, process.env.GOD_ID].includes(member.id)) {
       const gif = randomItem(gifs_403);
       const embed = new MessageEmbed();
-      embed.setURL(gif);
+      embed.setImage(gif);
       await msg.channel.send(`${msg.author}, `, embed);
       return;
     }
