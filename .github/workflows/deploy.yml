@@ -1,5 +1,5 @@
 on: [push]
-name: Linux_Container_Workflow
+name: Deploy_Bot
 
 jobs:
     build-and-deploy:

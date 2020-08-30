@@ -21,9 +21,8 @@ export default class InfiniteClock {
 
   /**
    * Represents the Promise of the running clock (when resolved, the clock has terminated)
-   * @type {Promise<void>}
    */
-  get runComplete() {
+  get task() {
     return this._task;
   }
 

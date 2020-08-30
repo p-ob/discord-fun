@@ -1,10 +1,6 @@
 import InfiniteClock from "./infinite-clock.js";
 import type { Client } from "discord.js";
 
-/**
- *
- * @param {Client} client
- */
 export default function configure(client: Client) {
   const CLOCK_STATE = new InfiniteClock();
   client.on("voiceStateUpdate", async (oldVoiceState, newVoiceState) => {
