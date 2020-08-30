@@ -46,6 +46,8 @@ class TimeoutAction {
   private _client: Client;
   private _userStateLookup: { [userId: string]: UserTimeoutCache } = {};
   private _dispatcher?: StreamDispatcher;
+  private _channel?: VoiceChannel;
+  private _guild?: Guild;
 
   constructor(client: Client) {
     this._client = client;
@@ -63,17 +65,17 @@ class TimeoutAction {
     }
 
     const shouldEndTimeout = msg.content.startsWith(UNTIMEOUT_COMMAND);
-    const guild = await getGuild(this._client);
-    if (!guild) {
+    this._guild = this._guild ?? (await getGuild(this._client));
+    if (!this._guild) {
       Logger.log("Guild not found");
       return;
     }
     let member: GuildMember;
     if (msg.mentions.users.first()) {
       const user = msg.mentions.users.first()!;
-      member = await guild.members.fetch(user);
+      member = await this._guild.members.fetch(user);
     } else {
-      member = await getReilly(this._client, guild);
+      member = await getReilly(this._client, this._guild);
     }
     if (!member) {
       Logger.log("User not found");
@@ -89,9 +91,9 @@ class TimeoutAction {
       Logger.log("User not in voice chat");
       return;
     }
-
-    const channel = guild.channels.cache.find((x) => x.id === process.env.CHANNEL_ID);
-    if (!channel) {
+    this._channel =
+      this._channel ?? (this._guild.channels.cache.find((x) => x.id === process.env.CHANNEL_ID) as VoiceChannel);
+    if (!this._channel) {
       Logger.log("Voice channel not found");
       return;
     }
@@ -108,7 +110,7 @@ class TimeoutAction {
       msg.reply(`<@${member.id}> has yet to finish his previous sentence.`);
       return;
     } else if (timeoutData.timedOut && shouldEndTimeout) {
-      await this._endTimeout(member.id, msg, channel as VoiceChannel, guild);
+      await this._endTimeout(member.id, msg);
       return;
     }
 
@@ -117,33 +119,33 @@ class TimeoutAction {
 
     timeoutData.timedOut = true;
 
-    await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
-    await member.voice.setChannel(channel);
-
     msg.reply(`<@${member.id}> has been sent on timeout.`);
 
     // we shouldn't connect the bot if someone else is currently enjoying the fun :)
-    if (!this._dispatcher && channel instanceof VoiceChannel) {
-      guild.voice?.channel?.leave();
-      const connection = await channel.join();
+    if (!this._dispatcher && this._channel instanceof VoiceChannel) {
+      this._guild.voice?.channel?.leave();
+      const connection = await this._channel.join();
       const ytId = randomItem(YT_IDS);
       this._dispatcher = connection.play(getYouTubeStream(ytId), {
         volume: 0.5,
       });
 
       this._dispatcher.on("finish", async () => {
-        await this._endTimeout(member.id, msg, channel, guild);
+        await this._endTimeout(member.id, msg);
         this._dispatcher?.destroy();
         this._dispatcher = undefined;
       });
     }
   }
 
-  async _endTimeout(userId: string, msg: Message, channel: VoiceChannel, guild: Guild) {
+  async _endTimeout(userId: string, msg: Message) {
     const userTimeoutData = this._userStateLookup[userId];
-    const member = await guild.members.fetch(userId);
+    const member = await this._guild!.members.fetch({
+      user: userId,
+      force: true,
+    });
     try {
-      (channel as VoiceChannel).leave();
+      (this._channel as VoiceChannel).leave();
     } catch (e) {
       Logger.error(e);
     }
@@ -158,18 +160,19 @@ class TimeoutAction {
 
     try {
       // put the user back in where he belongs (if he is currently in a channel)
-      const updatedMember = await guild.members.fetch({
-        user: member.id,
-        force: true,
-      });
-      const isStillConnected = !!updatedMember.voice?.channelID;
+      const isStillConnected = !!member.voice?.channelID;
       if (isStillConnected && userTimeoutData.originalVoiceChannel) {
-        await updatedMember.voice?.setChannel(userTimeoutData.originalVoiceChannel);
+        await member.voice?.setChannel(userTimeoutData.originalVoiceChannel);
       }
     } catch (e) {
       Logger.error(e);
     }
     userTimeoutData.timedOut = false;
     msg.reply(`<@${member.id}> has served his sentence.`);
+  }
+
+  async _startTimeout(member: GuildMember) {
+    await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
+    await member.voice.setChannel(this._channel!);
   }
 }
