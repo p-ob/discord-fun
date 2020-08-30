@@ -59,6 +59,7 @@ export default function configure(client: Client) {
 
       if (member.id === client.user?.id) {
         msg.reply("You have no power here!");
+        return;
       }
 
       if (!member.voice?.channelID) {
