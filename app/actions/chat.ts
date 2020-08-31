@@ -31,7 +31,7 @@ export default function configure(client: Client) {
     }
     if (msg.author.id === process.env.REILLY_ID) {
       const reply = randomItem(replies);
-      await msg.channel.startTyping(1);
+      msg.channel.startTyping(1);
       await awaitTimeout(2500);
       msg.channel.stopTyping(true);
       const p = msg.reply(reply);
