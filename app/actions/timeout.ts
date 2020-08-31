@@ -141,7 +141,6 @@ class TimeoutAction {
 
     msg.reply(`<@${member.id}> has been sent on timeout.`);
 
-    // we shouldn't connect the bot if someone else is currently enjoying the fun :)
     if (!this._dispatcher && this._channel instanceof VoiceChannel) {
       this._guild!.voice?.channel?.leave();
       const connection = await this._channel.join();
@@ -152,8 +151,6 @@ class TimeoutAction {
 
       this._dispatcher.on("finish", async () => {
         await this._endTimeout(member.id, msg);
-        this._dispatcher?.destroy();
-        this._dispatcher = undefined;
       });
     }
   }
@@ -192,5 +189,22 @@ class TimeoutAction {
     }
     userTimeoutData.timedOut = false;
     msg.reply(`<@${member.id}> has served his sentence.`);
+    if (!this._someoneElseInPurgatory(userId)) {
+      this._dispatcher?.destroy();
+      this._dispatcher = undefined;
+    }
+  }
+
+  private _someoneElseInPurgatory(userId: string) {
+    const keys = Object.keys(this._userStateLookup);
+    let someoneElseInPurgatory = false;
+    for (const k of keys) {
+      if (k === userId) {
+        continue;
+      }
+      someoneElseInPurgatory = this._userStateLookup[k].timedOut;
+    }
+
+    return someoneElseInPurgatory;
   }
 }
