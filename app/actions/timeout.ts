@@ -1,6 +1,6 @@
 import { MessageEmbed, VoiceChannel } from "discord.js";
-import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common";
-import Logger from "../logger";
+import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
+import Logger from "../logger.js";
 import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
 
 const YT_IDS = [

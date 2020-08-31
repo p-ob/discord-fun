@@ -1,5 +1,5 @@
-import { getYouTubeStream } from "../common";
-import Logger from "../logger";
+import { getYouTubeStream } from "../common.js";
+import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
 const SHORT_YT_ID = "pmyOHqgidYQ";
