@@ -1,5 +1,5 @@
-import { minutesToMilliseconds, awaitTimeout } from "./common.js";
-import Logger from "./logger.js";
+import { minutesToMilliseconds, awaitTimeout } from "./common";
+import Logger from "./logger";
 
 export default class InfiniteClock {
   private _cancellationRequested: boolean;

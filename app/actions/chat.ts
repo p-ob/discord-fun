@@ -1,5 +1,5 @@
-import { awaitTimeout, minutesToMilliseconds, randomItem } from "../common.js";
-import Logger from "../logger.js";
+import { awaitTimeout, minutesToMilliseconds, randomItem } from "../common";
+import Logger from "../logger";
 import type { Client } from "discord.js";
 
 const replies = [

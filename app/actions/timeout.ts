@@ -1,6 +1,6 @@
 import { MessageEmbed, VoiceChannel } from "discord.js";
-import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
-import Logger from "../logger.js";
+import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common";
+import Logger from "../logger";
 import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
 
 const YT_IDS = [
@@ -116,7 +116,7 @@ class TimeoutAction {
     let timeoutData = this._userStateLookup[member.id];
     if (!timeoutData) {
       timeoutData = {
-        timedOut: true,
+        timedOut: false,
       };
       this._userStateLookup[member.id] = timeoutData;
     }
