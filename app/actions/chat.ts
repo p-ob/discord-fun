@@ -33,8 +33,8 @@ export default function configure(client: Client) {
       const reply = randomItem(replies);
       await msg.channel.startTyping(1);
       await awaitTimeout(2500);
-      const p = msg.reply(reply);
       msg.channel.stopTyping(true);
+      const p = msg.reply(reply);
       isPaused = true;
       const maxDelay = minutesToMilliseconds(20);
       const minDelay = minutesToMilliseconds(2);
