@@ -28,6 +28,9 @@ const YT_IDS = [
   "ZZ5LpwO-An4" /* HEYYEYAAEYAAAEYAEYAA */,
   "I1188GO4p1E" /* Get Schwifty */,
   "UsnRQJxanVM" /* Dovahkiin */,
+  "JaPf-MRKITg" /* Ackbars Fish Sticks */,
+  "dPzQ7IhtIhk" /* The Word */,
+  "S68GmenFk2g" /* Reilly's favorite */,
 ];
 
 const gifs_403 = [
