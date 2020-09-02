@@ -57,9 +57,9 @@ export default class InfiniteClock {
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
       do {
-        delay = delay ?? getRandomNumber(min!, max!);
+        const curDelay = delay ?? getRandomNumber(min!, max!);
         Logger.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
-        await Promise.race([awaitTimeout(delay), this._cancellationToken]);
+        await Promise.race([awaitTimeout(curDelay), this._cancellationToken]);
         if (!this._cancellationRequested) {
           Logger.log("Something happened.");
           await callback();
