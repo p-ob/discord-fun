@@ -3,6 +3,7 @@ import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
 export default function configure(client: Client) {
+  let isMuted = false;
   const CLOCK_STATE = new InfiniteClock();
   client.on("voiceStateUpdate", async (oldVoiceState, newVoiceState) => {
     if (oldVoiceState.member?.id === process.env.REILLY_ID) {
@@ -17,7 +18,8 @@ export default function configure(client: Client) {
           await CLOCK_STATE.cancel();
         }
         CLOCK_STATE.run(async () => {
-          await newVoiceState.member?.voice.setSelfMute(true);
+          await (isMuted ? newVoiceState.member?.voice.setMute(false) : newVoiceState.member?.voice.setMute(true));
+          isMuted = !isMuted;
         });
       } else {
         // user didn't just join a channel
