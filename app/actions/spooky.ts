@@ -2,7 +2,7 @@ import { getYouTubeStream, getRandomItem } from "../common.js";
 import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
-const YT_IDS = ["NIpns4R9Ep4" /* slow remix */, "2M1aJYVKtM8" /* remix */, "1dSY6ZuXEY" /* OG */];
+const YT_IDS = ["NIpns4R9Ep4" /* slow remix */, "2M1aJYVKtM8" /* remix */, "-1dSY6ZuXEY" /* OG */];
 
 export default function configure(client: Client) {
   client.on("message", async (msg) => {
