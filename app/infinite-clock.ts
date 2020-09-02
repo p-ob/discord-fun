@@ -1,4 +1,4 @@
-import { minutesToMilliseconds, awaitTimeout } from "./common.js";
+import { minutesToMilliseconds, awaitTimeout, getRandomNumber } from "./common.js";
 import Logger from "./logger.js";
 
 export default class InfiniteClock {
@@ -57,7 +57,7 @@ export default class InfiniteClock {
     return (this._task = new Promise(async (resolve) => {
       this._running = true;
       do {
-        delay = delay ?? Math.floor(Math.random() * (max! - min! + 1)) + min!;
+        delay = delay ?? getRandomNumber(min!, max!);
         Logger.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
         await Promise.race([awaitTimeout(delay), this._cancellationToken]);
         if (!this._cancellationRequested) {
