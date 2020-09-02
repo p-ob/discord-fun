@@ -16,8 +16,8 @@ export default function configure(client: Client) {
           }
           await CLOCK_STATE.cancel();
         }
-        CLOCK_STATE.run(() => {
-          newVoiceState.member?.voice.setSelfMute(true);
+        CLOCK_STATE.run(async () => {
+          await newVoiceState.member?.voice.setSelfMute(true);
         });
       } else {
         // user didn't just join a channel

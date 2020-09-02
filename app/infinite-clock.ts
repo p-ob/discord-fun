@@ -61,7 +61,8 @@ export default class InfiniteClock {
         Logger.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
         await Promise.race([awaitTimeout(delay), this._cancellationToken]);
         if (!this._cancellationRequested) {
-          callback();
+          Logger.log("Something happened.");
+          await callback();
         }
       } while (!this._cancellationRequested);
       this._cancellationRequested = false;

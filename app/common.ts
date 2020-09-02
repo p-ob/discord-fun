@@ -28,7 +28,7 @@ export function awaitTimeout(timeMs: number) {
 }
 
 export function minutesToMilliseconds(minutes: number) {
-  return minutes * 60 * 100;
+  return minutes * 60 * 1000; // 1 minute * 60 seconds / minute * 1000 milliseconds / second
 }
 
 export function getYouTubeStream(id: string) {
