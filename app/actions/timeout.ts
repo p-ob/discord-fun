@@ -75,7 +75,7 @@ class TimeoutAction {
 
   private async _handleTimeoutCommand(msg: Message) {
     if (msg.author.id === process.env.REILLY_ID) {
-      msg.reply(`<@${msg.author.id}> can't put people into timeout.`);
+      msg.reply(`${msg.author} can't put people into timeout.`);
       return;
     }
 
@@ -125,7 +125,7 @@ class TimeoutAction {
     }
 
     if (timeoutData.timedOut && !shouldEndTimeout) {
-      msg.reply(`<@${member.id}> has yet to finish his previous sentence.`);
+      msg.reply(`${member.user} has yet to finish his previous sentence.`);
       return;
     } else if (timeoutData.timedOut && shouldEndTimeout) {
       await this._endTimeout(member.id, msg);
@@ -142,7 +142,7 @@ class TimeoutAction {
     await member.roles.set([process.env.REILLY_TIMEOUT_ROLE_ID!]);
     await member.voice.setChannel(this._channel!);
 
-    msg.reply(`<@${member.id}> has been sent on timeout.`);
+    msg.reply(`${member.user} has been sent on timeout.`);
 
     if (!this._dispatcher && this._channel instanceof VoiceChannel) {
       this._guild!.voice?.channel?.leave();
@@ -191,7 +191,7 @@ class TimeoutAction {
       Logger.error(e);
     }
     userTimeoutData.timedOut = false;
-    msg.reply(`<@${member.id}> has served his sentence.`);
+    msg.reply(`${member.user} has served his sentence.`);
     if (!this._someoneElseInPurgatory(userId)) {
       this._dispatcher?.destroy();
       this._dispatcher = undefined;
