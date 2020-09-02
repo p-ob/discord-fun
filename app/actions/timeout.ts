@@ -1,5 +1,5 @@
 import { MessageEmbed, VoiceChannel } from "discord.js";
-import { getGuild, getReilly, getYouTubeStream, randomItem } from "../common.js";
+import { getGuild, getReilly, getYouTubeStream, getRandomItem, getRandomNumber, awaitTimeout } from "../common.js";
 import Logger from "../logger.js";
 import type { Guild, GuildMember, Client, Collection, Role, StreamDispatcher, Message } from "discord.js";
 
@@ -31,6 +31,7 @@ const YT_IDS = [
   "JaPf-MRKITg" /* Ackbars Fish Sticks */,
   "dPzQ7IhtIhk" /* The Word */,
   "S68GmenFk2g" /* Reilly's favorite */,
+  "LgwCVQdW1HM" /* And they don't stop coming and they... */,
 ];
 
 const gifs_403 = [
@@ -63,6 +64,7 @@ class TimeoutAction {
   private _dispatcher?: StreamDispatcher;
   private _channel?: VoiceChannel;
   private _guild?: Guild;
+  private _isNuclear = false;
 
   constructor(client: Client) {
     this._client = client;
@@ -74,6 +76,9 @@ class TimeoutAction {
   }
 
   private async _handleTimeoutCommand(msg: Message) {
+    if (this._isNuclear) {
+      return;
+    }
     if (msg.author.id === process.env.REILLY_ID) {
       msg.reply(`${msg.author} can't put people into timeout.`);
       return;
@@ -98,7 +103,7 @@ class TimeoutAction {
     }
 
     if ([this._client.user?.id, process.env.GOD_ID].includes(member.id)) {
-      const gif = randomItem(gifs_403);
+      const gif = getRandomItem(gifs_403);
       const embed = new MessageEmbed();
       embed.setImage(gif);
       await msg.channel.send(`${msg.author}, `, embed);
@@ -114,6 +119,21 @@ class TimeoutAction {
     if (!this._channel) {
       Logger.log("Voice channel not found");
       return;
+    }
+
+    const noU = !shouldEndTimeout && getRandomNumber(1, 100) >= 95;
+    const nuclear = !shouldEndTimeout && getRandomNumber(1, 1000) >= 995;
+
+    if (nuclear) {
+      await this._goNuclear(msg);
+      return;
+    } else if (noU) {
+      member = await this._guild!.members.fetch(msg.author);
+      const embed = new MessageEmbed();
+      embed.setImage(
+        "https://media3.giphy.com/media/Jo85Nij8XBKRvY5O00/giphy.gif?cid=ecf05e47jm55bn0wyg0k5ziwoptw9bosiq00z4f3wv6ljiw6&rid=giphy.gif"
+      );
+      await msg.channel.send(`${msg.author}, `, embed);
     }
 
     let timeoutData = this._userStateLookup[member.id];
@@ -147,7 +167,7 @@ class TimeoutAction {
     if (!this._dispatcher && this._channel instanceof VoiceChannel) {
       this._guild!.voice?.channel?.leave();
       const connection = await this._channel.join();
-      const ytId = randomItem(YT_IDS);
+      const ytId = getRandomItem(YT_IDS);
       this._dispatcher = connection.play(getYouTubeStream(ytId), {
         volume: 0.5,
       });
@@ -158,7 +178,7 @@ class TimeoutAction {
     }
   }
 
-  private async _endTimeout(userId: string, msg: Message) {
+  private async _endTimeout(userId: string, msg?: Message) {
     const userTimeoutData = this._userStateLookup[userId];
     const member = await this._guild!.members.fetch({
       user: userId,
@@ -191,7 +211,9 @@ class TimeoutAction {
       Logger.error(e);
     }
     userTimeoutData.timedOut = false;
-    msg.reply(`${member.user} has served his sentence.`);
+    if (msg) {
+      msg.reply(`${member.user} has served his sentence.`);
+    }
     if (!this._someoneElseInPurgatory(userId)) {
       this._dispatcher?.destroy();
       this._dispatcher = undefined;
@@ -209,5 +231,31 @@ class TimeoutAction {
     }
 
     return someoneElseInPurgatory;
+  }
+
+  private async _goNuclear(msg: Message) {
+    for (const userId of Object.keys(this._userStateLookup)) {
+      if (this._userStateLookup[userId].timedOut) {
+        await this._endTimeout(userId);
+      }
+    }
+
+    for (let i = 3; i > 0; i--) {
+      await msg.channel.send(`${i}...`);
+      await awaitTimeout(1000);
+    }
+
+    await msg.channel.send("💣");
+
+    const broadcast = this._client.voice?.createBroadcast();
+    const ytId = getRandomItem(YT_IDS);
+    this._dispatcher = broadcast?.play(getYouTubeStream(ytId), {
+      volume: 1.0,
+    });
+    this._isNuclear = true;
+    this._dispatcher?.on("finish", () => {
+      this._isNuclear = false;
+      this._dispatcher = undefined;
+    });
   }
 }

@@ -37,6 +37,10 @@ export function getYouTubeStream(id: string) {
   });
 }
 
-export function randomItem<T>(arr: T[]): T {
+export function getRandomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+export function getRandomNumber(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

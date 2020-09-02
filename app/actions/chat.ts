@@ -1,4 +1,4 @@
-import { awaitTimeout, minutesToMilliseconds, randomItem } from "../common.js";
+import { awaitTimeout, minutesToMilliseconds, getRandomItem } from "../common.js";
 import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
@@ -30,7 +30,7 @@ export default function configure(client: Client) {
       return;
     }
     if (msg.author.id === process.env.REILLY_ID) {
-      const reply = randomItem(replies);
+      const reply = getRandomItem(replies);
       msg.channel.startTyping(1);
       await awaitTimeout(2500);
       msg.channel.stopTyping(true);
