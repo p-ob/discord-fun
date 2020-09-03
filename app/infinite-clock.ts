@@ -58,11 +58,16 @@ export default class InfiniteClock {
       this._running = true;
       do {
         const curDelay = delay ?? getRandomNumber(min!, max!);
-        Logger.log(`Prepare yourself... something gonna happen in ${delay}ms.`);
+        Logger.log(`Prepare yourself... something gonna happen in ${curDelay}ms.`);
         await Promise.race([awaitTimeout(curDelay), this._cancellationToken]);
         if (!this._cancellationRequested) {
           Logger.log("Something happened.");
-          await callback();
+          try {
+            await callback();
+          } catch (e) {
+            Logger.error(e);
+            break;
+          }
         }
       } while (!this._cancellationRequested);
       this._cancellationRequested = false;
