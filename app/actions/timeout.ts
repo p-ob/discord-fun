@@ -35,7 +35,7 @@ const YT_IDS = [
   "4fWyzwo1xg0" /* Hello Darkness My Old Friend */,
   "JuYeHPFR3f0" /* Gotta Catch 'Em All */,
   "4IRdw_Qgwqc" /* Shiny Teeth */,
-  "xlYCxbBZUCY" /* Phantom Mentace */,
+  "xlYCxbBZUCY" /* Phantom Menace */,
 ];
 
 const gifs_403 = [

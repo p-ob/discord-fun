@@ -20,6 +20,8 @@ const replies = [
   "You're a poo face",
   "♥",
   "Facts: http://forums.bungie.org/halo/archive7.pl?read=177201",
+  `Have you ever taken a dump so massive, that you turn around, stare in the toilet, and think "Wow... that came out of my butt."? Cuz Bungie has.`,
+  "I've seen hentai with better plot than Halo",
 ];
 
 export default function configure(client: Client) {
