@@ -1,7 +1,9 @@
 on: [push]
-name: Deploy_Bot
+name: Deploy_JS_Bot
 
 jobs:
+    env:
+      working-directory: ./src/js/
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
@@ -11,6 +13,7 @@ jobs:
 
         - name: 'Build the app'
           uses: actions/setup-node@v1
+          working-directory: ${{ env.working-directory }}
           with:
             node-version: '14'
         - run: |
@@ -26,10 +29,12 @@ jobs:
 
         - name: 'Login via Azure CLI'
           uses: azure/login@v1
+          working-directory: ${{ env.working-directory }}
           with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
         
         - uses: azure/docker-login@v1
+          working-directory: ${{ env.working-directory }}
           with:
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -38,6 +43,7 @@ jobs:
             docker push pobrien91/reillybot:${{ github.sha }}
 
         - name: 'Deploy to Azure Container Instances'
+          working-directory: ${{ env.working-directory }}
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: ${{ secrets.RESOURCE_GROUP }}
