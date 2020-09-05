@@ -1,9 +1,11 @@
 on: [push]
 name: Deploy_JS_Bot
 
+defaults:
+  run:
+    working-directory: src/js
+
 jobs:
-    env:
-      working-directory: ./src/js/
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
@@ -45,6 +47,7 @@ jobs:
         - name: 'Deploy to Azure Container Instances'
           working-directory: ${{ env.working-directory }}
           uses: 'azure/aci-deploy@v1'
+          if: ${{ github.ref == 'master' }}
           with:
             resource-group: ${{ secrets.RESOURCE_GROUP }}
             dns-name-label: reillybot
