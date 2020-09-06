@@ -39,7 +39,7 @@ const YT_IDS = [
 ];
 
 const gifs_403 = [
-  "https://media1.giphy.com/media/XWXnf6hRiKBJS/giphy.gif" /* You have no power here */,
+  "https://media1.tenor.com/images/ef6afb5829aee6718ed7161b8d475233/tenor.gif" /* You have no power here */,
   "https://media.tenor.com/images/23c71973d91d01b2cec29e285cd71196/tenor.gif" /* Troy Chuckle */,
   "https://media1.tenor.com/images/138aed5d9c9056183cd874bc8dd31979/tenor.gif" /* ah ah ah */,
   "https://media1.tenor.com/images/a45e05b55e74a44fcff40d66592b3422/tenor.gif" /* Harvey Spectre */,
