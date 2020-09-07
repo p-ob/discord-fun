@@ -1,5 +1,5 @@
 import ytdl from "ytdl-core";
-import type { Guild, Client, VoiceChannel, Collection } from "discord.js";
+import type { Guild, Client } from "discord.js";
 
 export function getGuild(client: Client) {
   return client.guilds.fetch(process.env.GUILD_ID!);
@@ -43,9 +43,4 @@ export function getRandomItem<T>(arr: T[]): T {
 
 export function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function getAllVoiceChannels(guild: Guild) {
-  const voiceChannels = guild.channels?.cache.filter((x) => x.type === "voice") as Collection<string, VoiceChannel>;
-  return voiceChannels.array();
 }

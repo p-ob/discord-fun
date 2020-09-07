@@ -1,4 +1,5 @@
-import { getYouTubeStream, getAllVoiceChannels } from "../common.js";
+import { getYouTubeStream } from "../common.js";
+import Logger from "../logger.js";
 import type { Client } from "discord.js";
 
 const SHORT_YT_ID = "pmyOHqgidYQ";
@@ -6,9 +7,6 @@ const LONG_YT_ID = "nf670orHKcA";
 
 export default function configure(client: Client) {
   client.on("message", async (msg) => {
-    if (!msg.guild || !client.voice) {
-      return;
-    }
     if (msg.content.startsWith("!coconuts")) {
       let id;
       if (msg.content.includes("long")) {
@@ -16,31 +14,21 @@ export default function configure(client: Client) {
       } else {
         id = SHORT_YT_ID;
       }
-
-      const broadcast = client.voice.createBroadcast();
-      const dispatcher = broadcast.play(getYouTubeStream(id), {
-        volume: 1.0,
-      });
-
-      for (const channel of getAllVoiceChannels(msg.guild)) {
+      const channel = msg.member?.voice?.channel;
+      if (channel) {
+        msg.guild?.voice?.channel?.leave();
         const connection = await channel.join();
-        connection.play(broadcast);
-        broadcast.on("end", () => {
-          channel.leave();
+        const dispatcher = connection.play(getYouTubeStream(id), {
+          volume: 0.5,
         });
+
         dispatcher.on("finish", () => {
-          try {
-            channel.leave();
-          } catch {
-            // left empty on purpose
-          }
+          channel.leave();
           dispatcher.destroy();
         });
+      } else {
+        Logger.log("A channel could not be found to connect to.");
       }
-
-      dispatcher.on("finish", () => {
-        dispatcher.destroy();
-      });
     }
   });
 }
