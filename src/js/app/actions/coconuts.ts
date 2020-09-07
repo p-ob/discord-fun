@@ -14,14 +14,21 @@ export default function configure(client: Client) {
       } else {
         id = SHORT_YT_ID;
       }
-      const broadcast = client.voice?.createBroadcast();
-      const dispatcher = broadcast?.play(getYouTubeStream(id), {
-        volume: 0.5,
-      });
+      const channel = msg.member?.voice?.channel;
+      if (channel) {
+        msg.guild?.voice?.channel?.leave();
+        const connection = await channel.join();
+        const dispatcher = connection.play(getYouTubeStream(id), {
+          volume: 0.5,
+        });
 
-      dispatcher?.on("finish", () => {
-        dispatcher!.destroy();
-      });
+        dispatcher.on("finish", () => {
+          channel.leave();
+          dispatcher.destroy();
+        });
+      } else {
+        Logger.log("A channel could not be found to connect to.");
+      }
     }
   });
 }
