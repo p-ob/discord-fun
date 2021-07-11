@@ -20,7 +20,7 @@ export async function getReilly(client: Client, guild: Guild) {
 }
 
 export function awaitTimeout(timeMs: number) {
-  return new Promise((resolve, _reject) => {
+  return new Promise<void>((resolve, _reject) => {
     setTimeout(() => {
       resolve();
     }, timeMs);
